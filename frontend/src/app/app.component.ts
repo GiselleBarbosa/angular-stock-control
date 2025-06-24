@@ -13,7 +13,5 @@ export class AppComponent {
 
   ngOnit() {
     this.primeNgConfig.ripple = true;
-
-    this.primeNgConfig.zIndex;
   }
 }
