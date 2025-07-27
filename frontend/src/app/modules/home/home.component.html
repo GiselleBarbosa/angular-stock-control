@@ -4,7 +4,7 @@
       class="flex justify-content-center align-content-center text-align-center"
     >
       <!-- LOGIN -->
-      <form>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmitLogin()">
         <p-card
           styleClass="w-20rem"
           header="Login"
@@ -14,15 +14,25 @@
           <div
             class="flex justify-content-center align-content-center text-align-center"
           >
-            <input type="email" pInputText placeholder="Email" />
+            <input
+              type="email"
+              pInputText
+              placeholder="Email"
+              formControlName="email"
+            />
           </div>
           <div
             class="flex justify-content-center align-content-center text-align-center mt-3"
           >
-            <input type="password" pInputText placeholder="Senha" />
+            <input
+              type="password"
+              pInputText
+              placeholder="Senha"
+              formControlName="senha"
+            />
           </div>
           <div class="card flex justify-content-center mt-3">
-            <button type="submit" pButton pRipple label="Login"></button>
+            <button [disabled]="!loginForm.valid" type="submit" pButton pRipple label="Login"></button>
           </div>
           <span
             class="flex justify-content-center align-content-center text-align-center mt-3 text-red-600 font-semibold"
@@ -34,9 +44,9 @@
       </form>
 
       <!-- SIGNUP -->
-      <form>
+      <form [formGroup]="signupForm" (ngSubmit)="onSubmitSignup()">
         <p-card
-          styleClass="mt-10 w-20rem"
+          styleClass="w-20rem"
           header="Criar conta"
           subheader="Crie já sua conta gratuita!"
           *ngIf="!loginCard"
@@ -44,20 +54,20 @@
           <div
             class="flex justify-content-center align-content-center text-align-center"
           >
-            <input type="text" pInputText placeholder="Nome" />
+            <input formControlName="nome" type="text" pInputText placeholder="Nome" />
           </div>
           <div
             class="flex justify-content-center align-content-center text-align-center mt-3"
           >
-            <input type="email" pInputText placeholder="Email" />
+            <input formControlName="email" type="email" pInputText placeholder="Email" />
           </div>
           <div
             class="flex justify-content-center align-content-center text-align-center mt-3"
           >
-            <input type="password" pInputText placeholder="Senha" />
+            <input formControlName="senha" type="password" pInputText placeholder="Senha" />
           </div>
           <div class="card flex justify-content-center mt-3">
-            <button type="submit" pButton pRipple label="Criar conta"></button>
+            <button [disabled]="!signupForm.valid" type="submit" pButton pRipple label="Criar conta"></button>
           </div>
           <span
             class="flex justify-content-center align-content-center text-align-center mt-3 text-red-600 font-semibold"
