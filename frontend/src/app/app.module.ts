@@ -11,6 +11,7 @@ import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
+import { CookieService } from 'ngx-cookie-service';
 
 const PRIMENG = [CardModule, InputTextModule, ToastModule, ButtonModule];
 
@@ -24,7 +25,9 @@ const PRIMENG = [CardModule, InputTextModule, ToastModule, ButtonModule];
     HttpClientModule,
     PRIMENG,
   ],
-  providers: [],
+  providers: [
+    CookieService
+  ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

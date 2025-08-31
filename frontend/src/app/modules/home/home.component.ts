@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { CookieService } from 'ngx-cookie-service';
+import { User } from 'src/app/interfaces/user-interface';
 import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
@@ -15,7 +17,7 @@ export class HomeComponent {
     password: ['', Validators.required],
   });
 
-  signupForm = this.formBuilder.group({
+  registerUserForm = this.formBuilder.group({
     name: ['', Validators.required],
     email: ['', Validators.required],
     password: ['', Validators.required],
@@ -23,15 +25,50 @@ export class HomeComponent {
 
   constructor(
     private formBuilder: FormBuilder,
-    private userService: UserService
+    private userService: UserService,
+    private cookieService: CookieService
   ) { }
 
-  onSubmitLogin() {
-    console.log('Login Dados: ', this.loginForm.value);
+  login() {
+    console.log("Chamou login");
+
+    if (this.loginForm.value && this.loginForm.valid) {
+      this.userService.authUser(this.loginForm.value as User.UserRequest).subscribe({
+        next: response => {
+          console.log("Response", response.email);
+          if (response) {
+            console.log("email", response.email);
+            this.cookieService.set("USER_INFO", response?.token);
+            alert("Login realizado com sucesso!");
+            this.loginForm.reset();
+          }
+        },
+        error: (e) => {
+          console.error("Houve um erro ao fazer o login.", e);
+        }
+      });
+    }
+
   }
 
-  onSubmitSignup() {
-
-    console.log('Cadastro Dados: ', this.signupForm.value);
+  register() {
+    if (this.registerUserForm.value && this.registerUserForm.valid) {
+      this.userService.signupUser(this.registerUserForm.value as User.UserRequest)
+        .subscribe(
+          {
+            next: (response) => {
+              if (response) {
+                alert("Usuário cadastrado com sucesso!");
+                this.registerUserForm.reset();
+                this.loginCard = true;
+              }
+            },
+            error: (e) => {
+              console.error("Houve um erro ao tentar cadastrar usuário.", e);
+            }
+          }
+        );
+    }
+    console.log('Cadastro Dados: ', this.registerUserForm.value);
   }
 }

@@ -15,12 +15,10 @@ export class UserService {
   constructor(private readonly http: HttpClient) { }
 
   signupUser(requestData: User.UserRequest): Observable<User.UserResponse> {
-
     return this.http.post<User.UserResponse>(`${this.API_URL}/user`, requestData);
   }
 
   authUser(requestData: Auth.AuthRequest): Observable<Auth.AuthResponse> {
     return this.http.post<Auth.AuthResponse>(`${this.API_URL}/auth`, requestData);
-
   }
 }
