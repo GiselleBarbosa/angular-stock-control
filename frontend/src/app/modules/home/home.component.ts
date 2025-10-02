@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
+import { MessageService } from 'primeng/api';
 import { User } from 'src/app/interfaces/user-interface';
 import { UserService } from 'src/app/services/user/user.service';
+import { Severity } from 'src/app/shared/enum/severity.enum';
 
 @Component({
   selector: 'app-home',
@@ -26,25 +28,28 @@ export class HomeComponent {
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private messageService: MessageService
   ) { }
 
+  show(severity: Severity, summary: string, detail: string) {
+    this.messageService.add({ severity: severity, summary, detail, life: 2000 });
+  }
+
   login() {
-    console.log("Chamou login");
 
     if (this.loginForm.value && this.loginForm.valid) {
       this.userService.authUser(this.loginForm.value as User.UserRequest).subscribe({
         next: response => {
-          console.log("Response", response.email);
           if (response) {
-            console.log("email", response.email);
             this.cookieService.set("USER_INFO", response?.token);
-            alert("Login realizado com sucesso!");
+            this.show(Severity.SUCCESS, "Sucesso", `Bem-vindo(a) de volta, ${response.name}!`);
+
             this.loginForm.reset();
           }
         },
-        error: (e) => {
-          console.error("Houve um erro ao fazer o login.", e);
+        error: () => {
+          this.show(Severity.ERROR, "Login", "Houve um erro ao fazer o login.");
         }
       });
     }
@@ -58,13 +63,13 @@ export class HomeComponent {
           {
             next: (response) => {
               if (response) {
-                alert("Usuário cadastrado com sucesso!");
+                this.show(Severity.SUCCESS, "Cadastro", "Usuário criado com sucesso!");
                 this.registerUserForm.reset();
                 this.loginCard = true;
               }
             },
-            error: (e) => {
-              console.error("Houve um erro ao tentar cadastrar usuário.", e);
+            error: () => {
+              this.show(Severity.ERROR, "Cadastro", "Houve um erro ao tentar cadastrar usuário.");
             }
           }
         );

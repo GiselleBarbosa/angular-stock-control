@@ -12,6 +12,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
 import { CookieService } from 'ngx-cookie-service';
+import { MessageService } from 'primeng/api';
 
 const PRIMENG = [CardModule, InputTextModule, ToastModule, ButtonModule];
 
@@ -26,7 +27,8 @@ const PRIMENG = [CardModule, InputTextModule, ToastModule, ButtonModule];
     PRIMENG,
   ],
   providers: [
-    CookieService
+    CookieService,
+    MessageService
   ],
   bootstrap: [AppComponent],
 })

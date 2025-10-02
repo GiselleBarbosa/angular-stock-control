@@ -43,10 +43,10 @@
             ></button>
           </div>
           <span
-            class="flex justify-content-center align-content-center text-align-center mt-3 text-red-600 font-semibold"
+            class="flex justify-content-center align-content-center text-center mt-5"
             (click)="loginCard = !loginCard"
             style="cursor: pointer"
-            >Criar conta</span
+            >Ainda não têm uma conta? <br /> Cadastra-se.</span
           >
         </p-card>
       </form>
@@ -71,7 +71,7 @@
             />
           </div>
           <div
-            class="flex justify-content-center align-content-center text-align-center mt-3"
+            class="flex justify-content-center align-content-center text-align-center my-3"
           >
             <input
               autocomplete="false"
@@ -82,7 +82,7 @@
             />
           </div>
           <div
-            class="flex justify-content-center align-content-center text-align-center mt-3"
+            class="flex justify-content-center align-content-center text-align-center my-3"
           >
             <input
               autocomplete="false"
@@ -92,7 +92,7 @@
               placeholder="Senha"
             />
           </div>
-          <div class="card flex justify-content-center mt-3">
+          <div class="card flex justify-content-center">
             <button
               [disabled]="!registerUserForm.valid"
               type="submit"
@@ -102,10 +102,10 @@
             ></button>
           </div>
           <span
-            class="flex justify-content-center align-content-center text-align-center mt-3 text-red-600 font-semibold"
+            class="flex justify-content-center align-content-center text-align-center mt-5"
             style="cursor: pointer"
             (click)="loginCard = !loginCard"
-            >Fazer login</span
+            >Já têm uma conta? Faça o login.</span
           >
         </p-card>
       </form>
