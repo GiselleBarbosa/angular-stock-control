@@ -15,7 +15,7 @@ const routes: Routes = [
   },
   {
     path: 'dashboard',
-    component: DashboardHomeComponent
+    loadChildren: () => import('./modules/dashboard/dashboard.module').then(m => m.DashboardModule),
   }
 ];
 
@@ -23,4 +23,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
