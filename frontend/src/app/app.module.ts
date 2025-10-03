@@ -5,8 +5,6 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
-import { CookieService } from 'ngx-cookie-service';
-import { MessageService } from 'primeng/api';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './modules/home/home.component';
 import { SharedModule } from './shared/shared.module';
@@ -21,10 +19,6 @@ import { SharedModule } from './shared/shared.module';
     ReactiveFormsModule,
     HttpClientModule,
     SharedModule,
-  ],
-  providers: [
-    CookieService,
-    MessageService
   ],
   bootstrap: [AppComponent],
 })

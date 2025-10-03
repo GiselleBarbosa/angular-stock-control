@@ -4,7 +4,7 @@
       class="flex justify-content-center align-content-center text-align-center"
     >
       <!-- LOGIN -->
-      <form [formGroup]="loginForm" (ngSubmit)="login()" autocomplete="off">
+      <form [formGroup]="loginForm" (ngSubmit)="login()">
         <p-card
           styleClass="w-20rem"
           header="Login"
@@ -15,7 +15,6 @@
             class="flex justify-content-center align-content-center text-align-center"
           >
             <input
-              autocomplete="off"
               type="email"
               pInputText
               placeholder="Email"
@@ -26,7 +25,6 @@
             class="flex justify-content-center align-content-center text-align-center mt-3"
           >
             <input
-              autocomplete="new-password"
               type="password"
               pInputText
               placeholder="Senha"
@@ -64,7 +62,6 @@
             class="flex justify-content-center align-content-center text-align-center"
           >
             <input
-              autocomplete="off"
               formControlName="name"
               type="text"
               pInputText
@@ -75,7 +72,6 @@
             class="flex justify-content-center align-content-center text-align-center my-3"
           >
             <input
-              autocomplete="off"
               formControlName="email"
               type="email"
               pInputText
@@ -86,7 +82,6 @@
             class="flex justify-content-center align-content-center text-align-center my-3"
           >
             <input
-              autocomplete="new-password"
               formControlName="password"
               type="password"
               pInputText
