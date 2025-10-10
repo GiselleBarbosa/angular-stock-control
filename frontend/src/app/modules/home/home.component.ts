@@ -37,6 +37,7 @@ export class HomeComponent {
   }
 
   login() {
+    console.log("Esta logado? ", this.userService.isLoggedIn()  );
 
     if (this.loginForm.value && this.loginForm.valid) {
       this.userService.authUser(this.loginForm.value as User.UserRequest).subscribe({
