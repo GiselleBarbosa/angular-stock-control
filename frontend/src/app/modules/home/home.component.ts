@@ -6,6 +6,7 @@ import { MessageService } from 'primeng/api';
 import { User } from 'src/app/interfaces/user-interface';
 import { UserService } from 'src/app/services/user/user.service';
 import { Severity } from 'src/app/enum/severity.enum';
+import { ToastMessagesService } from 'src/app/services/toast-messages.service';
 
 @Component({
   selector: 'app-home',
@@ -32,29 +33,25 @@ export class HomeComponent {
     private formBuilder: FormBuilder,
     private userService: UserService,
     private cookieService: CookieService,
-    private messageService: MessageService,
-    private router : Router
+    private router: Router,
+    private toastMessage: ToastMessagesService
   ) { }
 
-  show(severity: Severity, summary: string, detail: string) {
-    this.messageService.add({ severity: severity, summary, detail, life: 2000 });
-  }
 
   login() {
-    console.log("Esta logado? ", this.userService.isLoggedIn()  );
 
     if (this.loginForm.value && this.loginForm.valid) {
       this.userService.authUser(this.loginForm.value as User.UserRequest).subscribe({
         next: response => {
           if (response) {
             this.cookieService.set("USER_INFO", response?.token);
-            this.show(Severity.SUCCESS, "Sucesso", `Bem-vindo(a) de volta, ${response.name}!`);
+            this.toastMessage.show(Severity.SUCCESS, "Bem-vindo(a),", `Olá, ${response.name}!`);
             this.loginForm.reset();
             this.router.navigate(['/dashboard']);
           }
         },
         error: () => {
-          this.show(Severity.ERROR, "Login", "Houve um erro ao fazer o login.");
+          this.toastMessage.show(Severity.ERROR, "Ops!", "Houve um erro ao fazer o login.");
         }
       });
     }
@@ -68,13 +65,13 @@ export class HomeComponent {
           {
             next: (response) => {
               if (response) {
-                this.show(Severity.SUCCESS, "Cadastro", "Usuário criado com sucesso!");
+                this.toastMessage.show(Severity.SUCCESS, "Cadastro", "Usuário criado com sucesso!");
                 this.registerUserForm.reset();
                 this.loginCard = true;
               }
             },
             error: () => {
-              this.show(Severity.ERROR, "Cadastro", "Houve um erro ao tentar cadastrar usuário.");
+              this.toastMessage.show(Severity.ERROR, "Cadastro", "Houve um erro ao tentar cadastrar usuário.");
             }
           }
         );
