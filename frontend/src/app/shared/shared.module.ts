@@ -7,8 +7,9 @@ import { SidebarModule } from 'primeng/sidebar';
 import { ToastModule } from 'primeng/toast';
 import { CookieService } from 'ngx-cookie-service';
 import { MessageService } from 'primeng/api';
+import { ChartModule } from 'primeng/chart';
 
-const PRIMENG = [CardModule, InputTextModule, ToastModule, ButtonModule, SidebarModule];
+const PRIMENG = [CardModule, InputTextModule, ToastModule, ButtonModule, SidebarModule, ChartModule];
 
 @NgModule({
   declarations: [],

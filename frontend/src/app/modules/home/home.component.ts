@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { MessageService } from 'primeng/api';
 import { User } from 'src/app/interfaces/user-interface';
@@ -29,7 +30,8 @@ export class HomeComponent {
     private formBuilder: FormBuilder,
     private userService: UserService,
     private cookieService: CookieService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private router : Router
   ) { }
 
   show(severity: Severity, summary: string, detail: string) {
@@ -45,8 +47,8 @@ export class HomeComponent {
           if (response) {
             this.cookieService.set("USER_INFO", response?.token);
             this.show(Severity.SUCCESS, "Sucesso", `Bem-vindo(a) de volta, ${response.name}!`);
-
             this.loginForm.reset();
+            this.router.navigate(['/dashboard']);
           }
         },
         error: () => {
