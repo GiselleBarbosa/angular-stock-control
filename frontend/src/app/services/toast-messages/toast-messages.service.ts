@@ -11,7 +11,18 @@ export class ToastMessagesService {
     private messageService: MessageService
   ) { }
 
-  show(statusMessage: Severity, titleMessage: string, detailMessage: string, lifeMessage?: number) {
-    this.messageService.add({ severity: statusMessage, summary: titleMessage, detail: detailMessage, life: 2000 });
+  /**
+ * Exibe uma mensagem toast personalizada na tela.
+ *
+ * @param severity - Severidade da mensagem (success, info, warn, error).
+ * @param titleMessage - Título/resumo exibido no toast.
+ * @param detailMessage - Texto detalhado da mensagem.
+ * @param lifeMessage - (Opcional) Tempo de exibição do toast em milissegundos. Padrão: 2000ms.
+ *
+ * Exemplo de uso:
+ *   this.toastMessage.show(Severity.SUCCESS, 'Sucesso!', 'Operação realizada com sucesso.', 3000);
+ */
+  show(severity: Severity, titleMessage: string, detailMessage: string, life?: number) {
+    this.messageService.add({ severity: severity, summary: titleMessage, detail: detailMessage, life: life });
   }
 }
