@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
-import { MessageService } from 'primeng/api';
 import { Severity } from 'src/app/enum/severity.enum';
 import { ToastMessagesService } from 'src/app/services/toast-messages.service';
 import { UserService } from 'src/app/services/user/user.service';
