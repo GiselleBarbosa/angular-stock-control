@@ -26,7 +26,12 @@ export class ToolbarNavigationComponent {
     if (this.isLoggedIn) {
       this.cookieService.delete('USER_INFO');
       this.router.navigate(['/home']);
-      this.toastMessage.show(Severity.WARN, 'Sessão finalizada', "Sua sessão foi encerrada com sucesso.", 2000);
+      this.toastMessage.show(
+        Severity.SUCCESS,
+        'Até logo! 👋',
+        'Você saiu do sistema com segurança. Volte sempre!',
+        3000
+      );
     }
   }
 

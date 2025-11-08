@@ -2,11 +2,10 @@ import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
-import { MessageService } from 'primeng/api';
-import { User } from 'src/app/interfaces/user-interface';
-import { UserService } from 'src/app/services/user/user.service';
 import { Severity } from 'src/app/enum/severity.enum';
+import { User } from 'src/app/interfaces/user-interface';
 import { ToastMessagesService } from 'src/app/services/toast-messages.service';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: 'app-home',
@@ -45,13 +44,21 @@ export class HomeComponent {
         next: response => {
           if (response) {
             this.cookieService.set("USER_INFO", response?.token);
-            this.toastMessage.show(Severity.SUCCESS, "Bem-vindo(a),", `Olá, ${response.name}!`);
+            this.toastMessage.show(
+              Severity.SUCCESS,
+              "✨ Bem-vindo(a) de volta!",
+              `Que bom ter você aqui novamente, ${response.name}!`
+            );
             this.loginForm.reset();
             this.router.navigate(['/dashboard']);
           }
         },
         error: () => {
-          this.toastMessage.show(Severity.ERROR, "Ops!", "Houve um erro ao fazer o login.");
+          this.toastMessage.show(
+            Severity.ERROR,
+            "Não foi possível entrar",
+            "Verifique seu e-mail e senha e tente novamente."
+          );
         }
       });
     }
@@ -65,13 +72,21 @@ export class HomeComponent {
           {
             next: (response) => {
               if (response) {
-                this.toastMessage.show(Severity.SUCCESS, "Cadastro", "Usuário criado com sucesso!");
+                this.toastMessage.show(
+                  Severity.SUCCESS,
+                  "Conta criada com sucesso! 🎉",
+                  "Você já pode fazer login para acessar o sistema"
+                );
                 this.registerUserForm.reset();
                 this.loginCard = true;
               }
             },
             error: () => {
-              this.toastMessage.show(Severity.ERROR, "Cadastro", "Houve um erro ao tentar cadastrar usuário.");
+              this.toastMessage.show(
+                Severity.ERROR,
+                "Não foi possível criar sua conta",
+                "Este e-mail já pode estar em uso. Tente usar outro e-mail ou faça login se já possui uma conta."
+              );
             }
           }
         );

@@ -7,8 +7,8 @@
       <form [formGroup]="loginForm" (ngSubmit)="login()">
         <p-card
           styleClass="w-20rem"
-          header="Login"
-          subheader="Faça login com sua conta existente!"
+          header="Bem-vindo de volta"
+          subheader="Entre com suas credenciais para acessar o sistema"
           *ngIf="loginCard"
         >
           <div
@@ -37,16 +37,21 @@
               type="submit"
               pButton
               pRipple
-              label="Login"
+              label="Entrar"
             ></button>
           </div>
           <span
             class="flex justify-content-center align-content-center text-center mt-5"
-            (click)="loginCard = !loginCard"
             style="cursor: pointer"
-            >Ainda não tem uma conta? <br />
-            Cadastre-se.</span
+            >Novo por aqui?
+          </span>
+          <span
+            style="cursor: pointer"
+            (click)="loginCard = !loginCard"
+            class="flex justify-content-center align-content-center text-center mt-2 font-bold"
           >
+            Criar uma conta grátis
+          </span>
         </p-card>
       </form>
 
@@ -54,8 +59,8 @@
       <form [formGroup]="registerUserForm" (ngSubmit)="register()">
         <p-card
           styleClass="w-20rem"
-          header="Criar conta"
-          subheader="Crie já sua conta gratuita!"
+          header="Comece agora mesmo"
+          subheader="Complete seu cadastro para ter acesso ao sistema"
           *ngIf="!loginCard"
         >
           <div
@@ -65,7 +70,7 @@
               formControlName="name"
               type="text"
               pInputText
-              placeholder="Nome"
+              placeholder="Seu nome completo"
             />
           </div>
           <div
@@ -75,7 +80,7 @@
               formControlName="email"
               type="email"
               pInputText
-              placeholder="Email"
+              placeholder="Seu melhor e-mail"
             />
           </div>
           <div
@@ -85,7 +90,7 @@
               formControlName="password"
               type="password"
               pInputText
-              placeholder="Senha"
+              placeholder="Digite sua senha"
             />
           </div>
           <div class="card flex justify-content-center">
@@ -94,16 +99,19 @@
               type="submit"
               pButton
               pRipple
-              label="Criar conta"
+              label="Cadastrar"
             ></button>
           </div>
           <span
             class="flex justify-content-center align-content-center text-center mt-5"
+            >Já tem uma conta? </span
+          ><span
             style="cursor: pointer"
             (click)="loginCard = !loginCard"
-            >Já tem uma conta? <br />
-            Entre.</span
+            class="flex justify-content-center align-content-center text-center mt-2 font-bold"
           >
+            Entrar
+          </span>
         </p-card>
       </form>
     </div>
