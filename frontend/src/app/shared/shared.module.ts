@@ -25,10 +25,10 @@ const PRIMENG = [CardModule, InputTextModule, ToastModule, ButtonModule, Sidebar
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
-    PRIMENG
+    ...PRIMENG
   ],
   exports: [
-    PRIMENG,
+    ...PRIMENG,
     ToolbarNavigationComponent
   ],
   providers: [

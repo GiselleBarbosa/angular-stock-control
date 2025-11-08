@@ -2,8 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { Severity } from 'src/app/enum/severity.enum';
-import { ToastMessagesService } from 'src/app/services/toast-messages.service';
-import { UserService } from 'src/app/services/user/user.service';
+import { ToastMessagesService } from 'src/app/services/toast-messages/toast-messages.service';
 
 @Component({
   selector: 'app-toolbar-navigation',
@@ -13,7 +12,6 @@ import { UserService } from 'src/app/services/user/user.service';
 export class ToolbarNavigationComponent {
 
   constructor(
-    private userService: UserService,
     private cookieService: CookieService,
     private router: Router,
     private toastMessage: ToastMessagesService

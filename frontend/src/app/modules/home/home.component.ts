@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { Severity } from 'src/app/enum/severity.enum';
 import { User } from 'src/app/interfaces/user-interface';
-import { ToastMessagesService } from 'src/app/services/toast-messages.service';
+import { ToastMessagesService } from 'src/app/services/toast-messages/toast-messages.service';
 import { UserService } from 'src/app/services/user/user.service';
 
 @Component({

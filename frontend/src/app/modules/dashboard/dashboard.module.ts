@@ -1,10 +1,8 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { DASHBOARDS_ROUTES } from './dashboard.routing';
 import { DashboardHomeComponent } from './pages/dashboard-home/dashboard-home.component';
-import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   imports: [

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MessageService } from 'primeng/api';
-import { Severity } from '../enum/severity.enum';
+import { Severity } from 'src/app/enum/severity.enum';
 
 @Injectable({
   providedIn: 'root'
