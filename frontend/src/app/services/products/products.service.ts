@@ -11,10 +11,10 @@ import { environments } from 'src/environments/environments';
 export class ProductsService {
   private readonly API_URL = environments.API_URL;
   private readonly JWT_TOKEN = this.cookieService.get('USER_INFO');
-  private readonly httpOptions = {
+  private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
-      Autorization: `Bearer ${this.JWT_TOKEN}`
+      Authorization: `Bearer ${this.JWT_TOKEN}`
     })
   };
 
