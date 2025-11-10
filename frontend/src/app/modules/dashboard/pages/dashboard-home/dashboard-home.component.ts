@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 import { Severity } from 'src/app/enum/severity.enum';
 import { Products } from 'src/app/interfaces/products-interface';
 import { ProductsService } from 'src/app/services/products/products.service';
@@ -11,8 +12,9 @@ import { ProductsDataTransferService } from 'src/app/shared/services/products/pr
   styleUrls: [],
   standalone: false,
 })
-export class DashboardHomeComponent implements OnInit {
+export class DashboardHomeComponent implements OnInit, OnDestroy {
   productsList: Products.ProductsResponse[] = [];
+  private destroy$ = new Subject<void>();
 
   constructor(
     private productsService: ProductsService,
@@ -25,26 +27,34 @@ export class DashboardHomeComponent implements OnInit {
   }
 
   getAllProducts() {
-    this.productsService.getAllProducts().subscribe({
-      next: response => {
-        if (response.length > 0) {
-          this.productsList = response;
-          this.productDataTransfer.setProducstData(response);
-          console.log('Products: ', response);
-        }
-      },
-      error: error => {
-        setTimeout(() => {
-          this.toastMessageService.show(
-            Severity.ERROR,
-            'Erro inesperado',
-            'Não foi possível exibir os produtos.',
-            3500
-          );
-        }, 2000);
+    this.productsService
+      .getAllProducts()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: response => {
+          if (response.length > 0) {
+            this.productsList = response;
+            this.productDataTransfer.setProducstData(response);
+            console.log('Products: ', response);
+          }
+        },
+        error: error => {
+          setTimeout(() => {
+            this.toastMessageService.show(
+              Severity.ERROR,
+              'Erro inesperado',
+              'Não foi possível exibir os produtos.',
+              3500
+            );
+          }, 2000);
 
-        console.error('Erro inesperado: ', error);
-      },
-    });
+          console.error('Erro inesperado: ', error);
+        },
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

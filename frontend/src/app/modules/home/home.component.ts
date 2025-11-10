@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
+import { Subject, takeUntil } from 'rxjs';
 import { Severity } from 'src/app/enum/severity.enum';
 import { User } from 'src/app/interfaces/user-interface';
 import { ToastMessagesService } from 'src/app/services/toast-messages/toast-messages.service';
@@ -11,10 +12,10 @@ import { UserService } from 'src/app/services/user/user.service';
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  standalone: false
-
+  standalone: false,
 })
-export class HomeComponent {
+export class HomeComponent implements OnDestroy {
+  private destroy$ = new Subject<void>();
   loginCard = true;
 
   loginForm = this.formBuilder.group({
@@ -34,63 +35,68 @@ export class HomeComponent {
     private cookieService: CookieService,
     private router: Router,
     private toastMessage: ToastMessagesService
-  ) { }
-
+  ) {}
 
   login() {
-
     if (this.loginForm.value && this.loginForm.valid) {
-      this.userService.authUser(this.loginForm.value as User.UserRequest).subscribe({
-        next: response => {
-          if (response) {
-            this.cookieService.set("USER_INFO", response?.token);
+      this.userService
+        .authUser(this.loginForm.value as User.UserRequest)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: response => {
+            if (response) {
+              this.cookieService.set('USER_INFO', response?.token);
+              this.toastMessage.show(
+                Severity.SUCCESS,
+                '✨ Bem-vindo(a) de volta!',
+                `Que bom ter você aqui novamente, ${response.name}!`
+              );
+              this.loginForm.reset();
+              this.router.navigate(['/dashboard']);
+            }
+          },
+          error: () => {
             this.toastMessage.show(
-              Severity.SUCCESS,
-              "✨ Bem-vindo(a) de volta!",
-              `Que bom ter você aqui novamente, ${response.name}!`
+              Severity.ERROR,
+              'Não foi possível entrar',
+              'Verifique seu e-mail e senha e tente novamente.'
             );
-            this.loginForm.reset();
-            this.router.navigate(['/dashboard']);
-          }
-        },
-        error: () => {
-          this.toastMessage.show(
-            Severity.ERROR,
-            "Não foi possível entrar",
-            "Verifique seu e-mail e senha e tente novamente."
-          );
-        }
-      });
+          },
+        });
     }
-
   }
 
   register() {
     if (this.registerUserForm.value && this.registerUserForm.valid) {
-      this.userService.signupUser(this.registerUserForm.value as User.UserRequest)
-        .subscribe(
-          {
-            next: (response) => {
-              if (response) {
-                this.toastMessage.show(
-                  Severity.SUCCESS,
-                  "Conta criada com sucesso! 🎉",
-                  "Você já pode fazer login para acessar o sistema"
-                );
-                this.registerUserForm.reset();
-                this.loginCard = true;
-              }
-            },
-            error: () => {
+      this.userService
+        .signupUser(this.registerUserForm.value as User.UserRequest)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: response => {
+            if (response) {
               this.toastMessage.show(
-                Severity.ERROR,
-                "Não foi possível criar sua conta",
-                "Este e-mail já pode estar em uso. Tente usar outro e-mail ou faça login se já possui uma conta."
+                Severity.SUCCESS,
+                'Conta criada com sucesso! 🎉',
+                'Você já pode fazer login para acessar o sistema'
               );
+              this.registerUserForm.reset();
+              this.loginCard = true;
             }
-          }
-        );
+          },
+          error: () => {
+            this.toastMessage.show(
+              Severity.ERROR,
+              'Não foi possível criar sua conta',
+              'Este e-mail já pode estar em uso. Tente usar outro e-mail ou faça login se já possui uma conta.'
+            );
+          },
+        });
     }
     console.log('Cadastro Dados: ', this.registerUserForm.value);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
