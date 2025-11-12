@@ -1,3 +1,35 @@
 <app-toolbar-navigation />
-{{ productsList | json }}
-<p-toast />
+
+<div class="grid">
+  <div class="col-12">
+    <p-card
+      *ngIf="productsList.length > 0; else noDataTemplate"
+      header="Quantidade de produtos em estoque"
+      styleClass="shadow-3 text-indigo-800">
+      <p-chart
+        type="bar"
+        [data]="productsChartData"
+        [options]="productsChartOptions"></p-chart>
+    </p-card>
+
+    <ng-template #noDataTemplate
+      ><p-card
+        styleClass="shadow-3 text-indigo-800"
+        header="Quantidade de produtos em estoque">
+        <p class="mb-4">
+          Não foi localizado nenhhum produto no estoque. Tente nomvamente mais tarde, ou
+          cadastre novos produtos.
+        </p>
+
+        <div>
+          <p-button
+            type="button"
+            icon="pi pi-refresh"
+            label="Recarregar página"
+            (onClick)="getAllProducts()"
+            routerLinkActive="exact_route"
+            styleClass="bg-indigo-800 p-button-secondary"></p-button>
+        </div> </p-card
+    ></ng-template>
+  </div>
+</div>

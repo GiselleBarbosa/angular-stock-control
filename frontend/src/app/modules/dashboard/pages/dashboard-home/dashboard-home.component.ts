@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChartData, ChartOptions } from 'chart.js';
 import { Subject, takeUntil } from 'rxjs';
 import { Severity } from 'src/app/enum/severity.enum';
 import { Products } from 'src/app/interfaces/products-interface';
@@ -14,6 +15,10 @@ import { ProductsDataTransferService } from 'src/app/shared/services/products/pr
 })
 export class DashboardHomeComponent implements OnInit, OnDestroy {
   productsList: Products.ProductsResponse[] = [];
+  productsChartData!: ChartData;
+  productsChartOptions!: ChartOptions;
+  showError = false;
+
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -26,7 +31,7 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
     this.getAllProducts();
   }
 
-  getAllProducts() {
+  getAllProducts(): void {
     this.productsService
       .getAllProducts()
       .pipe(takeUntil(this.destroy$))
@@ -35,10 +40,12 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
           if (response.length > 0) {
             this.productsList = response;
             this.productDataTransfer.setProducstData(response);
+            this.setProductsChartConfig();
             console.log('Products: ', response);
           }
         },
         error: error => {
+          this.showError = true;
           setTimeout(() => {
             this.toastMessageService.show(
               Severity.ERROR,
@@ -51,6 +58,61 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
           console.error('Erro inesperado: ', error);
         },
       });
+  }
+
+  setProductsChartConfig(): void {
+    if (this.productsList.length > 0) {
+      const documentStyle = getComputedStyle(document.documentElement);
+      const textColor = documentStyle.getPropertyValue('--text-color');
+      const textColorSecondary = documentStyle.getPropertyValue('--text-color-secomdary');
+      const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
+
+      this.productsChartData = {
+        labels: this.productsList.map(product => product.name),
+        datasets: [
+          {
+            label: 'Quantidade',
+            backgroundColor: documentStyle.getPropertyValue('--indigo-400'),
+            borderColor: documentStyle.getPropertyValue('--indigo-400'),
+            hoverBackgroundColor: documentStyle.getPropertyValue('--indigo-500'),
+            data: this.productsList.map(product => product.amount),
+          },
+        ],
+      };
+
+      this.productsChartOptions = {
+        maintainAspectRatio: false,
+        aspectRatio: 0.8,
+        plugins: {
+          legend: {
+            labels: {
+              color: textColor,
+            },
+          },
+        },
+        scales: {
+          x: {
+            ticks: {
+              color: textColorSecondary,
+              font: {
+                weight: 'bold',
+              },
+            },
+            grid: {
+              color: surfaceBorder,
+            },
+          },
+          y: {
+            ticks: {
+              color: textColorSecondary,
+            },
+            grid: {
+              color: surfaceBorder,
+            },
+          },
+        },
+      };
+    }
   }
 
   ngOnDestroy(): void {
