@@ -6,30 +6,28 @@
       *ngIf="productsList.length > 0; else noDataTemplate"
       header="Quantidade de produtos em estoque"
       styleClass="shadow-3 m-5 text-indigo-800">
-      <p-chart
-        type="bar"
-        [data]="productsChartData"
-        [options]="productsChartOptions"></p-chart>
+      <p-chart type="bar" [data]="productsChartData" [options]="productsChartOptions">
+      </p-chart>
     </p-card>
 
-    <ng-template #noDataTemplate
-      ><p-card
-        styleClass="shadow-3 text-indigo-800"
-        header="Quantidade de produtos em estoque">
-        <p class="mb-4">
-          Não foi localizado nenhhum produto no estoque. Tente nomvamente mais tarde, ou
-          cadastre novos produtos.
+    <ng-template #noDataTemplate>
+      <div class="flex flex-column align-items-center justify-content-center mt-7 p-4">
+        <i class="pi pi-exclamation-circle text-5xl text-red-500 mb-3"></i>
+
+        <h2 class="text-xl font-bold mb-2">Não foi possível carregar os produtos</h2>
+
+        <p class="text-center mb-4 text-600" style="max-width: 380px">
+          Ocorreu um problema ao acessar o estoque. Tente novamente.
         </p>
 
-        <div>
-          <p-button
-            type="button"
-            icon="pi pi-refresh"
-            label="Recarregar página"
-            (onClick)="getAllProducts()"
-            routerLinkActive="exact_route"
-            styleClass="bg-indigo-800 p-button-secondary"></p-button>
-        </div> </p-card
-    ></ng-template>
+        <p-button
+          type="button"
+          icon="pi pi-refresh"
+          label="Recarregar"
+          (onClick)="getAllProducts()"
+          styleClass="p-button-outlined p-button-sm">
+        </p-button>
+      </div>
+    </ng-template>
   </div>
 </div>
