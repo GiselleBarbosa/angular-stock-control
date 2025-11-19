@@ -5,7 +5,7 @@
     <p-card
       *ngIf="productsList.length > 0; else noDataTemplate"
       header="Quantidade de produtos em estoque"
-      styleClass="shadow-3 text-indigo-800">
+      styleClass="shadow-3 m-5 text-indigo-800">
       <p-chart
         type="bar"
         [data]="productsChartData"
