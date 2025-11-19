@@ -17,15 +17,17 @@ export class ProductsDataTransferService {
     }
   }
 
-  getProducstData() {
+   getProducstData() {
     this.productsDataEmitter$.pipe(take(1),
       map(data => data?.filter(products => products.amount > 0))).subscribe({
         next: response => {
           if (response) {
             this.productsData = response;
+            console.log("Service ", response);
           }
         },
         error: (error) => console.error(error)
       });
+      return this.productsData
   }
 }

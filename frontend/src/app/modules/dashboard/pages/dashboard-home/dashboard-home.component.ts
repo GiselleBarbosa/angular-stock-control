@@ -41,7 +41,6 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
             this.productsList = response;
             this.productDataTransfer.setProducstData(response);
             this.setProductsChartConfig();
-            console.log('Products: ', response);
           }
         },
         error: error => {
