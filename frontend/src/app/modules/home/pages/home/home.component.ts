@@ -5,14 +5,13 @@ import { CookieService } from 'ngx-cookie-service';
 import { Subject, takeUntil } from 'rxjs';
 import { Severity } from 'src/app/enum/severity.enum';
 import { User } from 'src/app/interfaces/user-interface';
-import { ToastMessagesService } from 'src/app/services/toast-messages/toast-messages.service';
 import { UserService } from 'src/app/services/user/user.service';
+import { ToastMessagesService } from 'src/app/shared/services/toast-messages/toast-messages.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  standalone: false,
 })
 export class HomeComponent implements OnDestroy {
   private destroy$ = new Subject<void>();

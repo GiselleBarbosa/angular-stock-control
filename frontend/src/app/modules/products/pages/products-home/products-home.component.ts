@@ -1,11 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { pipe, Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { Severity } from 'src/app/enum/severity.enum';
 import { Products } from 'src/app/interfaces/products-interface';
 import { ProductsService } from 'src/app/services/products/products.service';
-import { ToastMessagesService } from 'src/app/services/toast-messages/toast-messages.service';
 import { ProductsDataTransferService } from 'src/app/shared/services/products/products-data-transfer.service';
+import { ToastMessagesService } from 'src/app/shared/services/toast-messages/toast-messages.service';
 
 @Component({
   selector: 'app-products-home',
@@ -32,10 +32,8 @@ export class ProductsHomeComponent implements OnInit, OnDestroy {
 
     if (produtosCarregados.length > 0) {
       this.productList = produtosCarregados;
-      console.log('IF');
     } else {
       this.getAPIProductsData();
-      console.log('ELSE');
     }
   }
 
@@ -46,16 +44,18 @@ export class ProductsHomeComponent implements OnInit, OnDestroy {
       .subscribe({
         next: response => {
           this.productList = response ?? [];
-          console.log('  getAPIProductsData()  this.productLista  ', this.productList);
         },
         error: error => {
           console.error(error);
-          this.router.navigate(['./dashboard']);
+
           this.toastMessageService.show(
             Severity.ERROR,
-            'Erro',
-            'Houve um erro ao carregar a lista de produtos'
+            'Erro inesperado',
+            'Não foi possível exibir os produtos.'
           );
+          setTimeout(() => {
+            this.router.navigate(['./dashboard']);
+          }, 2600);
         },
       });
   }

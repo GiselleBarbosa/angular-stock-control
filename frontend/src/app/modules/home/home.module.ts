@@ -1,14 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SharedModuleGlobal } from 'src/app/shared/shared.module';
-import { DASHBOARDS_ROUTES } from './dashboard.routing';
-import { DashboardHomeComponent } from './pages/dashboard-home/dashboard-home.component';
+
 import { CommonModule } from '@angular/common';
 import { ToastMessagesService } from 'src/app/shared/services/toast-messages/toast-messages.service';
+import { HomeComponent } from './pages/home/home.component';
+import { HOME_ROUTES } from './home.routing';
 
 @NgModule({
-  imports: [RouterModule.forChild(DASHBOARDS_ROUTES), SharedModuleGlobal, CommonModule],
-  declarations: [DashboardHomeComponent],
+  imports: [SharedModuleGlobal, CommonModule, RouterModule.forChild(HOME_ROUTES)],
+  declarations: [HomeComponent],
   providers: [ToastMessagesService],
 })
-export class DashboardModule {}
+export class HomedModule {}

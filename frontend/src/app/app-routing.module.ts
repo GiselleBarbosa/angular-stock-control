@@ -1,18 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './modules/home/home.component';
-import { DashboardHomeComponent } from './modules/dashboard/pages/dashboard-home/dashboard-home.component';
 import { AuthGuard } from './guards/auth-guard.service';
+import { HomeComponent } from './modules/home/pages/home/home.component';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'dashboard',
+    redirectTo: 'HomeComponent',
     pathMatch: 'full',
   },
   {
     path: 'home',
-    component: HomeComponent,
+    loadChildren: () => import('./modules/home/home.module').then(m => m.HomedModule),
   },
   {
     path: 'dashboard',

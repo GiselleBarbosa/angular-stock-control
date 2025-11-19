@@ -1,17 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ChartData, ChartOptions } from 'chart.js';
 import { Subject, takeUntil } from 'rxjs';
-import { Severity } from 'src/app/enum/severity.enum';
 import { Products } from 'src/app/interfaces/products-interface';
 import { ProductsService } from 'src/app/services/products/products.service';
-import { ToastMessagesService } from 'src/app/services/toast-messages/toast-messages.service';
 import { ProductsDataTransferService } from 'src/app/shared/services/products/products-data-transfer.service';
 
 @Component({
   selector: 'app-dashboard-home',
   templateUrl: './dashboard-home.component.html',
   styleUrls: [],
-  standalone: false,
 })
 export class DashboardHomeComponent implements OnInit, OnDestroy {
   productsList: Products.ProductsResponse[] = [];
@@ -23,7 +20,6 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
 
   constructor(
     private productsService: ProductsService,
-    private toastMessageService: ToastMessagesService,
     private productDataTransfer: ProductsDataTransferService
   ) {}
 
@@ -45,14 +41,6 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
         },
         error: error => {
           this.showError = true;
-          setTimeout(() => {
-            this.toastMessageService.show(
-              Severity.ERROR,
-              'Erro inesperado',
-              'Não foi possível exibir os produtos.',
-              3500
-            );
-          }, 2000);
 
           console.error('Erro inesperado: ', error);
         },

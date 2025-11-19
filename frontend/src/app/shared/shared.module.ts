@@ -1,28 +1,36 @@
 import { CommonModule, CurrencyPipe } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
-import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { ChartModule } from 'primeng/chart';
-import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
-import { InputTextModule } from 'primeng/inputtext';
-import { SidebarModule } from 'primeng/sidebar';
-import { ToastModule } from 'primeng/toast';
-import { TableModule } from 'primeng/table';
-import { ToolbarModule } from 'primeng/toolbar';
-import { InputMaskModule } from 'primeng/inputmask';
-import { InputSwitchModule } from 'primeng/inputswitch';
-import { InputTextareaModule } from 'primeng/inputtextarea';
-import { ToolbarNavigationComponent } from './components/toolbar-navigation/toolbar-navigation.component';
-import { HttpClientModule } from '@angular/common/http';
-import { InputNumberModule } from 'primeng/inputnumber';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
+import { InputMaskModule } from 'primeng/inputmask';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { SidebarModule } from 'primeng/sidebar';
+import { TableModule } from 'primeng/table';
+import { ToastModule } from 'primeng/toast';
+import { ToolbarModule } from 'primeng/toolbar';
+import { ToolbarNavigationComponent } from './components/toolbar-navigation/toolbar-navigation.component';
 
 import { DropdownModule } from 'primeng/dropdown';
 import { TooltipModule } from 'primeng/tooltip';
+import { ToastMessagesService } from './services/toast-messages/toast-messages.service';
+
+const IMPORTS = [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  RouterModule,
+  HttpClientModule,
+];
 
 const PRIMENG = [
   CardModule,
@@ -46,21 +54,13 @@ const PRIMENG = [
 
 @NgModule({
   declarations: [ToolbarNavigationComponent],
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    RouterModule,
-    HttpClientModule,
-    ...PRIMENG,
-  ],
-  exports: [...PRIMENG, ToolbarNavigationComponent],
+  imports: [IMPORTS, PRIMENG],
+  exports: [PRIMENG, ToolbarNavigationComponent, IMPORTS],
   providers: [
     CookieService,
-    MessageService,
     DialogService,
     CurrencyPipe,
-    ConfirmationService,
+    ToastMessagesService
   ],
 })
-export class SharedModule {}
+export class SharedModuleGlobal {}

@@ -1,25 +1,24 @@
 import { NgModule } from '@angular/core';
+
+import { AppComponent } from './app.component';
+import { SharedModuleGlobal } from './shared/shared.module';
+import { AppRoutingModule } from './app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AppRoutingModule } from './app-routing.module';
-
-import { HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
-import { AppComponent } from './app.component';
-import { HomeComponent } from './modules/home/home.component';
-import { SharedModule } from './shared/shared.module';
-
+import { ToastMessagesService } from './shared/services/toast-messages/toast-messages.service';
+import { ToastModule } from 'primeng/toast';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent],
+  declarations: [AppComponent],
   imports: [
-    BrowserModule,
+    SharedModuleGlobal,
     AppRoutingModule,
+    BrowserModule,
     BrowserAnimationsModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    SharedModule,
+    ToastModule,
   ],
   bootstrap: [AppComponent],
+  providers: [ToastMessagesService, MessageService, ConfirmationService],
 })
-export class AppModule { }
+export class AppModule {}

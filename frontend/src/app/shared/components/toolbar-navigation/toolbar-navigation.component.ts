@@ -2,20 +2,19 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { Severity } from 'src/app/enum/severity.enum';
-import { ToastMessagesService } from 'src/app/services/toast-messages/toast-messages.service';
+import { ToastMessagesService } from '../../services/toast-messages/toast-messages.service';
 
 @Component({
   selector: 'app-toolbar-navigation',
   templateUrl: './toolbar-navigation.component.html',
-  standalone: false
+  standalone: false,
 })
 export class ToolbarNavigationComponent {
-
   constructor(
     private cookieService: CookieService,
     private router: Router,
     private toastMessage: ToastMessagesService
-  ) { }
+  ) {}
 
   isLoggedIn = this.cookieService.check('USER_INFO');
 
@@ -31,6 +30,4 @@ export class ToolbarNavigationComponent {
       );
     }
   }
-
-
 }
