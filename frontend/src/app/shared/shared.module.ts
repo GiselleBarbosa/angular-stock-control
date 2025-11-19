@@ -23,6 +23,7 @@ import { ToolbarNavigationComponent } from './components/toolbar-navigation/tool
 import { DropdownModule } from 'primeng/dropdown';
 import { TooltipModule } from 'primeng/tooltip';
 import { ToastMessagesService } from './services/toast-messages/toast-messages.service';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 const IMPORTS = [
   CommonModule,
@@ -50,17 +51,13 @@ const PRIMENG = [
   DropdownModule,
   ConfirmDialogModule,
   TooltipModule,
+  ProgressSpinnerModule,
 ];
 
 @NgModule({
   declarations: [ToolbarNavigationComponent],
   imports: [IMPORTS, PRIMENG],
   exports: [PRIMENG, ToolbarNavigationComponent, IMPORTS],
-  providers: [
-    CookieService,
-    DialogService,
-    CurrencyPipe,
-    ToastMessagesService
-  ],
+  providers: [CookieService, DialogService, CurrencyPipe, ToastMessagesService],
 })
 export class SharedModuleGlobal {}

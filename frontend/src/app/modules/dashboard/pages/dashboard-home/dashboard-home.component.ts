@@ -14,6 +14,7 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
   productsList: Products.ProductsResponse[] = [];
   productsChartData!: ChartData;
   productsChartOptions!: ChartOptions;
+  loading = true;
   showError = false;
 
   private destroy$ = new Subject<void>();
@@ -28,20 +29,26 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
   }
 
   getAllProducts(): void {
+    this.loading = true;
+    this.showError = false;
+
     this.productsService
       .getAllProducts()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: response => {
-          if (response.length > 0) {
-            this.productsList = response;
+          this.loading = false;
+
+          this.productsList = response ?? [];
+
+          if (this.productsList.length > 0) {
             this.productDataTransfer.setProducstData(response);
             this.setProductsChartConfig();
           }
         },
         error: error => {
+          this.loading = false;
           this.showError = true;
-
           console.error('Erro inesperado: ', error);
         },
       });
