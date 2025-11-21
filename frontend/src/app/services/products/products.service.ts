@@ -38,4 +38,13 @@ export class ProductsService {
       }
     );
   }
+
+  createProduct(product: Products.CreateProductRequest): Observable<Products.CreateProductResponse> {
+    return this.http
+    .post<Products.CreateProductResponse>(
+      `${this.API_URL}/product`,
+      product,
+      this.httpOptions
+    );
+  }
 }

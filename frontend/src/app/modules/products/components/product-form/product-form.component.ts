@@ -2,8 +2,11 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
+import { Severity } from 'src/app/enum/severity.enum';
 import { Categories } from 'src/app/interfaces/categories-interface';
+import { Products } from 'src/app/interfaces/products-interface';
 import { CategoriesService } from 'src/app/services/categories/categories.service';
+import { ProductsService } from 'src/app/services/products/products.service';
 import { ToastMessagesService } from 'src/app/shared/services/toast-messages/toast-messages.service';
 
 @Component({
@@ -27,6 +30,7 @@ export class ProductFormComponent implements OnInit, OnDestroy {
 
   constructor(
     private categoriesService: CategoriesService,
+    private productsService: ProductsService,
     private formBuilder: FormBuilder,
     private toastMessageService: ToastMessagesService,
     private router: Router
@@ -50,7 +54,39 @@ export class ProductFormComponent implements OnInit, OnDestroy {
   }
 
   handleSubmitAddProduct(): void {
-    throw new Error('Method not implemented.');
+    if (this.addProductForm?.value && this.addProductForm?.valid) {
+      const requestCreateProduct: Products.CreateProductRequest = {
+        name: this.addProductForm?.value.name as string,
+        price: this.addProductForm?.value.price as string,
+        description: this.addProductForm?.value.description as string,
+        category_id: this.addProductForm?.value.category_id as string,
+        amount: Number(this.addProductForm?.value.amount),
+      };
+
+      this.productsService
+        .createProduct(requestCreateProduct)
+        .pipe(takeUntil(this.detroy$))
+        .subscribe({
+          next: response => {
+            if (response) {
+              this.toastMessageService.show(
+                Severity.SUCCESS,
+                'Operação concluída',
+                'Produto criado com sucesso.'
+              );
+            }
+            this.addProductForm.reset();
+          },
+          error: error => {
+            console.error(error);
+            this.toastMessageService.show(
+              Severity.ERROR,
+              'Falha na operação',
+              'Houve um erro ao criar o produto.'
+            );
+          },
+        });
+    }
   }
 
   ngOnDestroy(): void {

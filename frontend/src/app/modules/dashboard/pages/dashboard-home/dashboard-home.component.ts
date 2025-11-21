@@ -1,7 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { ChartData, ChartOptions } from 'chart.js';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Subject, takeUntil } from 'rxjs';
+import { EventAction } from 'src/app/interfaces/event-action-interface';
 import { Products } from 'src/app/interfaces/products-interface';
+import { ProductFormComponent } from 'src/app/modules/products/components/product-form/product-form.component';
 import { ProductsService } from 'src/app/services/products/products.service';
 import { ProductsDataTransferService } from 'src/app/shared/services/products/products-data-transfer.service';
 
@@ -16,12 +19,14 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
   productsChartOptions!: ChartOptions;
   loading = true;
   showError = false;
+  ref!: DynamicDialogRef;
 
   private destroy$ = new Subject<void>();
 
   constructor(
     private productsService: ProductsService,
-    private productDataTransfer: ProductsDataTransferService
+    private productDataTransfer: ProductsDataTransferService,
+    private dialogService: DialogService
   ) {}
 
   ngOnInit(): void {
@@ -106,6 +111,25 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
           },
         },
       };
+    }
+  }
+
+  createNewProduct(event: EventAction): void {
+    if (event) {
+      this.ref = this.dialogService.open(ProductFormComponent, {
+        header: event.action,
+        width: '70%',
+        contentStyle: { overflow: 'auto' },
+        baseZIndex: 10000,
+        maximizable: true,
+        data: {
+          event: event,
+          productList: this.productsList,
+        },
+      });
+      this.ref.onClose.pipe(takeUntil(this.destroy$)).subscribe({
+        next: () => this.getAllProducts(),
+      });
     }
   }
 

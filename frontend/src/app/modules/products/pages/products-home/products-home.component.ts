@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Subject, takeUntil } from 'rxjs';
 import { Severity } from 'src/app/enum/severity.enum';
 import { EventAction } from 'src/app/interfaces/event-action-interface';
@@ -8,21 +9,24 @@ import { Products } from 'src/app/interfaces/products-interface';
 import { ProductsService } from 'src/app/services/products/products.service';
 import { ProductsDataTransferService } from 'src/app/shared/services/products/products-data-transfer.service';
 import { ToastMessagesService } from 'src/app/shared/services/toast-messages/toast-messages.service';
+import { ProductFormComponent } from '../../components/product-form/product-form.component';
 
 @Component({
   selector: 'app-products-home',
   templateUrl: './products-home.component.html',
 })
 export class ProductsHomeComponent implements OnInit, OnDestroy {
-  private readonly detroy$: Subject<void> = new Subject();
+  private readonly destroy$: Subject<void> = new Subject();
   public productList: Products.ProductsResponse[] = [];
+  public ref!: DynamicDialogRef;
 
   constructor(
     private productsService: ProductsService,
     private productsDataTransferService: ProductsDataTransferService,
     private router: Router,
     private toastMessageService: ToastMessagesService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private dialogService: DialogService
   ) {}
 
   ngOnInit(): void {
@@ -42,7 +46,7 @@ export class ProductsHomeComponent implements OnInit, OnDestroy {
   getAPIProductsData(): void {
     this.productsService
       .getAllProducts()
-      .pipe(takeUntil(this.detroy$))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: response => {
           this.productList = response ?? [];
@@ -64,13 +68,25 @@ export class ProductsHomeComponent implements OnInit, OnDestroy {
 
   handleProductAction(event: EventAction): void {
     if (event) {
-      console.log(event);
+      this.ref = this.dialogService.open(ProductFormComponent, {
+        header: event.action,
+        width: '70%',
+        contentStyle: { overflow: 'auto' },
+        baseZIndex: 10000,
+        maximizable: true,
+        data: {
+          event: event,
+          productList: this.productList,
+        },
+      });
+      this.ref.onClose.pipe(takeUntil(this.destroy$)).subscribe({
+        next: () => this.getAPIProductsData(),
+      });
     }
   }
 
   handleDeleteProductAction(event: { product_id: string; productName: string }): void {
     if (event) {
-      console.log('Event ', event);
       this.confirmationService.confirm({
         message: `Confirma a exclusão do produto ${event.productName}?`,
         header: 'Confirmação de exclusão',
@@ -90,7 +106,7 @@ export class ProductsHomeComponent implements OnInit, OnDestroy {
   deleteProduct(product_id: string) {
     this.productsService
       .deleteProduct(product_id)
-      .pipe(takeUntil(this.detroy$))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: response => {
           if (response) {
@@ -117,7 +133,7 @@ export class ProductsHomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.detroy$.next();
-    this.detroy$.complete();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
