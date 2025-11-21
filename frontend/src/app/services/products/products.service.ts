@@ -27,13 +27,13 @@ export class ProductsService {
       .pipe(map(product => product.filter(data => data.amount > 0)));
   }
 
-  deleteProduct(productId: string): Observable<Products.DeleteProductResponse> {
+  deleteProduct(product_id: string): Observable<Products.DeleteProductResponse> {
     return this.http.delete<Products.DeleteProductResponse>(
-      `${this.API_URL}/products/delete`,
+      `${this.API_URL}/product/delete`,
       {
         ...this.httpOptions,
         params: {
-          product_id: productId,
+          product_id: product_id,
         },
       }
     );

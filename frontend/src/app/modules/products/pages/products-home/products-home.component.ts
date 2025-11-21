@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
-import { Subject, take, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { Severity } from 'src/app/enum/severity.enum';
 import { EventAction } from 'src/app/interfaces/event-action-interface';
 import { Products } from 'src/app/interfaces/products-interface';
@@ -68,7 +68,7 @@ export class ProductsHomeComponent implements OnInit, OnDestroy {
     }
   }
 
-  handleDeleteProductAction(event: { productId: string; productName: string }): void {
+  handleDeleteProductAction(event: { product_id: string; productName: string }): void {
     if (event) {
       console.log('Event ', event);
       this.confirmationService.confirm({
@@ -78,7 +78,7 @@ export class ProductsHomeComponent implements OnInit, OnDestroy {
         acceptLabel: 'sim',
         rejectLabel: 'não',
         accept: () => {
-          this.deleteProduct(event.productId);
+          this.deleteProduct(event.product_id);
         },
         reject: () => {
           this.confirmationService.close();
@@ -87,9 +87,9 @@ export class ProductsHomeComponent implements OnInit, OnDestroy {
     }
   }
 
-  deleteProduct(productId: string) {
+  deleteProduct(product_id: string) {
     this.productsService
-      .deleteProduct(productId)
+      .deleteProduct(product_id)
       .pipe(takeUntil(this.detroy$))
       .subscribe({
         next: response => {

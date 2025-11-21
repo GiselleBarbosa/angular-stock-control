@@ -25,9 +25,9 @@ export class ProductsTableComponent {
     }
   }
 
-  handleDeleteProduct(productId: string, productName: string): void {
-    if (productId !== '' && productName !== '') {
-      this.deleteProductEvent.emit({ productId, productName });
+  handleDeleteProduct(product_id: string, productName: string): void {
+    if (product_id !== '' && productName !== '') {
+      this.deleteProductEvent.emit({ product_id, productName });
     }
   }
 }

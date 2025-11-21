@@ -1,4 +1,4 @@
 export interface DeleteProductEvent {
-   productId: string;
-   productName: string
+  product_id: string;
+  productName: string;
 }
