@@ -1,7 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subject, takeUntil } from 'rxjs';
+import { ConfirmationService } from 'primeng/api';
+import { Subject, take, takeUntil } from 'rxjs';
 import { Severity } from 'src/app/enum/severity.enum';
+import { EventAction } from 'src/app/interfaces/event-action-interface';
 import { Products } from 'src/app/interfaces/products-interface';
 import { ProductsService } from 'src/app/services/products/products.service';
 import { ProductsDataTransferService } from 'src/app/shared/services/products/products-data-transfer.service';
@@ -10,7 +12,6 @@ import { ToastMessagesService } from 'src/app/shared/services/toast-messages/toa
 @Component({
   selector: 'app-products-home',
   templateUrl: './products-home.component.html',
-  styleUrls: [],
 })
 export class ProductsHomeComponent implements OnInit, OnDestroy {
   private readonly detroy$: Subject<void> = new Subject();
@@ -20,14 +21,15 @@ export class ProductsHomeComponent implements OnInit, OnDestroy {
     private productsService: ProductsService,
     private productsDataTransferService: ProductsDataTransferService,
     private router: Router,
-    private toastMessageService: ToastMessagesService
+    private toastMessageService: ToastMessagesService,
+    private confirmationService: ConfirmationService
   ) {}
 
   ngOnInit(): void {
     this.getServiceProductsData();
   }
 
-  getServiceProductsData() {
+  getServiceProductsData(): void {
     const produtosCarregados = this.productsDataTransferService.getProducstData();
 
     if (produtosCarregados.length > 0) {
@@ -37,7 +39,7 @@ export class ProductsHomeComponent implements OnInit, OnDestroy {
     }
   }
 
-  getAPIProductsData() {
+  getAPIProductsData(): void {
     this.productsService
       .getAllProducts()
       .pipe(takeUntil(this.detroy$))
@@ -56,6 +58,60 @@ export class ProductsHomeComponent implements OnInit, OnDestroy {
           setTimeout(() => {
             this.router.navigate(['./dashboard']);
           }, 2600);
+        },
+      });
+  }
+
+  handleProductAction(event: EventAction): void {
+    if (event) {
+      console.log(event);
+    }
+  }
+
+  handleDeleteProductAction(event: { productId: string; productName: string }): void {
+    if (event) {
+      console.log('Event ', event);
+      this.confirmationService.confirm({
+        message: `Confirma a exclusão do produto ${event.productName}?`,
+        header: 'Confirmação de exclusão',
+        icon: 'pi pi-exclamation-triangle',
+        acceptLabel: 'sim',
+        rejectLabel: 'não',
+        accept: () => {
+          this.deleteProduct(event.productId);
+        },
+        reject: () => {
+          this.confirmationService.close();
+        },
+      });
+    }
+  }
+
+  deleteProduct(productId: string) {
+    this.productsService
+      .deleteProduct(productId)
+      .pipe(takeUntil(this.detroy$))
+      .subscribe({
+        next: response => {
+          if (response) {
+            this.toastMessageService.show(
+              Severity.SUCCESS,
+              'Operação confirmada',
+              'Produto removido com sucesso.',
+              3000
+            );
+
+            this.getServiceProductsData();
+          }
+        },
+        error: error => {
+          console.error(error);
+          this.toastMessageService.show(
+            Severity.ERROR,
+            'Falha na operação',
+            'Erro ao remover produto.',
+            3000
+          );
         },
       });
   }

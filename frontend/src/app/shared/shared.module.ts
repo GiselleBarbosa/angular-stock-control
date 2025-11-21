@@ -1,14 +1,12 @@
-import { CommonModule, CurrencyPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { ChartModule } from 'primeng/chart';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { InputMaskModule } from 'primeng/inputmask';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputSwitchModule } from 'primeng/inputswitch';
@@ -19,11 +17,12 @@ import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ToolbarNavigationComponent } from './components/toolbar-navigation/toolbar-navigation.component';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 import { DropdownModule } from 'primeng/dropdown';
-import { TooltipModule } from 'primeng/tooltip';
-import { ToastMessagesService } from './services/toast-messages/toast-messages.service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { TooltipModule } from 'primeng/tooltip';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 const IMPORTS = [
   CommonModule,
@@ -40,6 +39,7 @@ const PRIMENG = [
   ButtonModule,
   SidebarModule,
   ChartModule,
+  ConfirmDialogModule,
   ToolbarModule,
   TableModule,
   InputMaskModule,
@@ -49,15 +49,13 @@ const PRIMENG = [
   InputNumberModule,
   DynamicDialogModule,
   DropdownModule,
-  ConfirmDialogModule,
   TooltipModule,
   ProgressSpinnerModule,
 ];
 
 @NgModule({
   declarations: [ToolbarNavigationComponent],
-  imports: [IMPORTS, PRIMENG],
-  exports: [PRIMENG, ToolbarNavigationComponent, IMPORTS],
-  providers: [CookieService, DialogService, CurrencyPipe, ToastMessagesService],
+  imports: [...IMPORTS, ...PRIMENG],
+  exports: [...PRIMENG, ToolbarNavigationComponent, IMPORTS],
 })
 export class SharedModuleGlobal {}

@@ -1,7 +1,5 @@
 export namespace Products {
-  export interface ProductsRequest {
-
-  }
+  export interface ProductsRequest {}
 
   export interface ProductsResponse {
     id: string;
@@ -13,5 +11,14 @@ export namespace Products {
       id: string;
       name: string;
     };
+  }
+
+  export interface DeleteProductResponse {
+    id: string;
+    name: string;
+    amount: number;
+    description: string;
+    price: string;
+    category_id: string;
   }
 }

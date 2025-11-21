@@ -4,6 +4,7 @@ import { AuthGuard } from './guards/auth-guard.service';
 import { HomeComponent } from './modules/home/pages/home/home.component';
 
 const routes: Routes = [
+  { path: '', component: HomeComponent },
   {
     path: '',
     redirectTo: 'HomeComponent',
@@ -11,7 +12,7 @@ const routes: Routes = [
   },
   {
     path: 'home',
-    loadChildren: () => import('./modules/home/home.module').then(m => m.HomedModule),
+    loadChildren: () => import('./modules/home/home.module').then(m => m.HomeModule),
   },
   {
     path: 'dashboard',

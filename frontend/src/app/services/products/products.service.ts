@@ -6,29 +6,36 @@ import { Products } from 'src/app/interfaces/products-interface';
 import { environments } from 'src/environments/environments';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProductsService {
   private readonly API_URL = environments.API_URL;
   private readonly JWT_TOKEN = this.cookieService.get('USER_INFO');
+
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${this.JWT_TOKEN}`
-    })
+      Authorization: `Bearer ${this.JWT_TOKEN}`,
+    }),
   };
 
-  constructor(private http: HttpClient, private cookieService: CookieService) { }
+  constructor(private http: HttpClient, private cookieService: CookieService) {}
 
   getAllProducts(): Observable<Products.ProductsResponse[]> {
-    return this.http.get<Products.ProductsResponse[]>(
-      `${this.API_URL}/products`,
-      this.httpOptions
-    ).pipe(
-      map(product =>
-        product.filter((data =>
-          data.amount > 0)
-        ))
+    return this.http
+      .get<Products.ProductsResponse[]>(`${this.API_URL}/products`, this.httpOptions)
+      .pipe(map(product => product.filter(data => data.amount > 0)));
+  }
+
+  deleteProduct(productId: string): Observable<Products.DeleteProductResponse> {
+    return this.http.delete<Products.DeleteProductResponse>(
+      `${this.API_URL}/products/delete`,
+      {
+        ...this.httpOptions,
+        params: {
+          product_id: productId,
+        },
+      }
     );
   }
 }
