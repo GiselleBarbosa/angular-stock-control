@@ -91,7 +91,6 @@ export class HomeComponent implements OnDestroy {
           },
         });
     }
-    console.log('Cadastro Dados: ', this.registerUserForm.value);
   }
 
   ngOnDestroy(): void {

@@ -38,9 +38,7 @@ export class ProductsHomeComponent implements OnInit, OnDestroy {
 
     if (produtosCarregados.length > 0) {
       this.productList = produtosCarregados;
-    } else {
-      this.getAPIProductsData();
-    }
+    } else this.getAPIProductsData();
   }
 
   getAPIProductsData(): void {
@@ -76,7 +74,7 @@ export class ProductsHomeComponent implements OnInit, OnDestroy {
         maximizable: true,
         data: {
           event: event,
-          productList: this.productList,
+          productData: this.productList,
         },
       });
       this.ref.onClose.pipe(takeUntil(this.destroy$)).subscribe({

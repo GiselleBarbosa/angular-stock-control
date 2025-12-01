@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { map, Observable } from 'rxjs';
+import { Categories } from 'src/app/interfaces/categories-interface';
 import { Products } from 'src/app/interfaces/products-interface';
 import { environments } from 'src/environments/environments';
 
@@ -39,11 +40,20 @@ export class ProductsService {
     );
   }
 
-  createProduct(product: Products.CreateProductRequest): Observable<Products.CreateProductResponse> {
-    return this.http
-    .post<Products.CreateProductResponse>(
+  createProduct(
+    product: Products.CreateProductRequest
+  ): Observable<Products.CreateProductResponse> {
+    return this.http.post<Products.CreateProductResponse>(
       `${this.API_URL}/product`,
       product,
+      this.httpOptions
+    );
+  }
+
+  editProduct(requestData: Products.EditProductRequest): Observable<void> {
+    return this.http.put<void>(
+      `${this.API_URL}/product/edit`,
+      requestData,
       this.httpOptions
     );
   }

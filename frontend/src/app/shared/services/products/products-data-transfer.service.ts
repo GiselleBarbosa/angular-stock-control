@@ -23,7 +23,6 @@ export class ProductsDataTransferService {
         next: response => {
           if (response) {
             this.productsData = response;
-            console.log("Service ", response);
           }
         },
         error: (error) => console.error(error)

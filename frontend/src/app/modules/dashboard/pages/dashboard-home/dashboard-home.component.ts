@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ChartData, ChartOptions } from 'chart.js';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Subject, takeUntil } from 'rxjs';
@@ -124,7 +124,7 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
         maximizable: true,
         data: {
           event: event,
-          productList: this.productsList,
+          productData: this.productsList,
         },
       });
       this.ref.onClose.pipe(takeUntil(this.destroy$)).subscribe({

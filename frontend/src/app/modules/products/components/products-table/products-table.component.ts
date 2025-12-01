@@ -16,7 +16,7 @@ export class ProductsTableComponent {
 
   produtoSelecionado!: Products.ProductsResponse;
   addProductEvent = ProductEvent.ADD_PRODUCT_EVENT;
-  editProductEvent = ProductEvent.EDIT_RODUCT_EVENT;
+  editProductEvent = ProductEvent.EDIT_PRODUCT_EVENT;
 
   handleProductEvent(action: string, id?: string): void {
     if (action && action !== '') {
