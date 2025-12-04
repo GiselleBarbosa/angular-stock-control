@@ -43,5 +43,6 @@ export namespace Products {
     description: string;
     product_id: string;
     amount: number;
+    category_id: string;
   }
 }
