@@ -8,4 +8,6 @@ import { Categories } from 'src/app/interfaces/categories-interface';
 })
 export class CategoriesTableComponent {
   @Input() public categories!: Categories.CategoriesResponse[];
+  
+  public categoriaSelecionada!: Categories.CategoriesResponse;
 }
