@@ -1,5 +1,5 @@
 export enum ProductEvent {
-  ADD_PRODUCT_EVENT = 'Adicionar Produto',
-  EDIT_PRODUCT_EVENT = 'Editar Produto',
-  SALE_PRODUCT_EVENT = 'Vender Produto',
+  ADD_PRODUCT_EVENT = 'Adicionar produto',
+  EDIT_PRODUCT_EVENT = 'Editar produto',
+  SALE_PRODUCT_EVENT = 'Vender produto',
 }
