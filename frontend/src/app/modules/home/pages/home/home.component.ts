@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { Subject, takeUntil } from 'rxjs';
 import { Severity } from 'src/app/enum/severity.enum';
-import { User } from 'src/app/interfaces/user-interface';
+import { User } from 'src/app/interfaces/user/user-interface';
 import { UserService } from 'src/app/services/user/user.service';
 import { ToastMessagesService } from 'src/app/shared/services/toast-messages/toast-messages.service';
 

@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map, take } from 'rxjs';
-import { Products } from 'src/app/interfaces/products-interface';
+import { Products } from 'src/app/interfaces/product/products-interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProductsDataTransferService {
-  public productsDataEmitter$ = new BehaviorSubject<Products.ProductsResponse[] | null>(null);
+  public productsDataEmitter$ = new BehaviorSubject<Products.ProductsResponse[] | null>(
+    null
+  );
   public productsData: Products.ProductsResponse[] = [];
-  constructor() { }
+  constructor() {}
 
   setProducstData(products: Products.ProductsResponse[]): void {
     if (products) {
@@ -17,16 +19,20 @@ export class ProductsDataTransferService {
     }
   }
 
-   getProducstData() {
-    this.productsDataEmitter$.pipe(take(1),
-      map(data => data?.filter(products => products.amount > 0))).subscribe({
+  getProducstData() {
+    this.productsDataEmitter$
+      .pipe(
+        take(1),
+        map(data => data?.filter(products => products.amount > 0))
+      )
+      .subscribe({
         next: response => {
           if (response) {
             this.productsData = response;
           }
         },
-        error: (error) => console.error(error)
+        error: error => console.error(error),
       });
-      return this.productsData
+    return this.productsData;
   }
 }

@@ -1,3 +1,5 @@
 <app-toolbar-navigation />
 
-<app-categories-table [categories]="categoriesList" />
+<app-categories-table
+  [categories]="categoriesList"
+  (deleteCategoryEvent)="handleDeleteCategoryEvent($event)" />

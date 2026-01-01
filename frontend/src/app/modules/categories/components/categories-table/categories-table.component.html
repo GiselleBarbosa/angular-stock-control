@@ -65,7 +65,8 @@
                   icon="pi pi-trash"
                   class="p-button-rounded p-button-danger"
                   pTooltip="Remover categoria"
-                  tooltipPosition="top"></button>
+                  tooltipPosition="top"
+                  (click)="handleCategoryEvent(category?.id, category?.name)"></button>
               </div>
             </td>
           </tr>

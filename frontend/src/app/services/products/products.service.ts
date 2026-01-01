@@ -2,8 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { map, Observable } from 'rxjs';
-import { Categories } from 'src/app/interfaces/categories-interface';
-import { Products } from 'src/app/interfaces/products-interface';
+import { Products } from 'src/app/interfaces/product/products-interface';
 import { environments } from 'src/environments/environments';
 
 @Injectable({
