@@ -21,10 +21,7 @@ export class ProductFormComponent implements OnInit, OnDestroy {
   private readonly detroy$ = new Subject<void>();
   public categoriesData!: Categories.CategoriesResponse[];
   public selectedCategory: { name: string; code: string }[] = [];
-  public productAction!: {
-    event: EventAction;
-    productData: Products.ProductsResponse[];
-  };
+  public productAction!: { event: EventAction; productData: Products.ProductsResponse[] };
   public productSelectedData!: Products.ProductsResponse;
   public saleProductSelectedData!: Products.ProductsResponse;
   public renderDropDownEditCategoryForm = false;

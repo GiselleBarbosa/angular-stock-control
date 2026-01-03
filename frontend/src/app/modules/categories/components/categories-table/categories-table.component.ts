@@ -7,23 +7,29 @@ import { EditCategoryEvent } from 'src/app/interfaces/event/category/edit-catego
 @Component({
   selector: 'app-categories-table',
   templateUrl: './categories-table.component.html',
-  styleUrls: ['./categories-table.component.scss'],
+  styleUrls: [],
 })
 export class CategoriesTableComponent {
   @Input() public categories!: Categories.CategoriesResponse[];
-  
-  @Output() public editEvent = new EventEmitter<EditCategoryEvent>();
+  @Output() public categoryEvent = new EventEmitter<EditCategoryEvent>();
   @Output() public deleteCategoryEvent = new EventEmitter<DeleteCategoryEvent>();
 
   public categoriaSelecionada!: Categories.CategoriesResponse;
   public categorySelected!: Categories.CategoriesResponse;
 
-  public addCategoryAction!: CategoryEvent.ADD_CATEGORY_EVENT;
-  public editCategoryAction!: CategoryEvent.EDIT_CATEGORY_EVENT;
+  public addCategoryAction = CategoryEvent.ADD_CATEGORY_EVENT;
+  public editCategoryAction = CategoryEvent.EDIT_CATEGORY_EVENT;
 
-  handleCategoryEvent(category_id: string, categoryName: string): void {
+  handleDeleteCategoryEvent(category_id: string, categoryName: string): void {
     if (category_id !== '' && categoryName !== '') {
       this.deleteCategoryEvent.emit({ category_id, categoryName });
+    }
+  }
+
+  handleCategoryEvent(action: string, id?: string, categoryName?: string): void {
+    console.log('Clicou ', action);
+    if (action && action !== '') {
+      this.categoryEvent.emit({ action, id, categoryName });
     }
   }
 }

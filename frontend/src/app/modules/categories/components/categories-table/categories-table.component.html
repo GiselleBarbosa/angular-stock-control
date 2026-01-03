@@ -36,6 +36,7 @@
             <th>
               <div class="flex justify-content-center">
                 <p-button
+                  (onClick)="handleCategoryEvent(addCategoryAction)"
                   styleClass="p-button-primary"
                   icon="pi pi-plus"
                   label="Adicionar"
@@ -66,7 +67,9 @@
                   class="p-button-rounded p-button-danger"
                   pTooltip="Remover categoria"
                   tooltipPosition="top"
-                  (click)="handleCategoryEvent(category?.id, category?.name)"></button>
+                  (click)="
+                    handleDeleteCategoryEvent(category?.id, category?.name)
+                  "></button>
               </div>
             </td>
           </tr>

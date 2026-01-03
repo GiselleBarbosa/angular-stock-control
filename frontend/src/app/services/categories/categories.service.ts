@@ -29,11 +29,21 @@ export class CategoriesService {
   }
 
   deleteCategory(requestData: { category_id: string }): Observable<void> {
-    return this.http.delete<void>(`${this.API_URL}/categories/delete`, {
+    return this.http.delete<void>(`${this.API_URL}/category/delete`, {
       ...this.httpOptions,
       params: {
-        category_id: requestData?.category_id,
+        id: requestData?.category_id,
       },
     });
+  }
+
+  createCategory(requestData: {
+    name: string;
+  }): Observable<Categories.CategoriesResponse> {
+    return this.http.post<Categories.CategoriesResponse>(
+      `${this.API_URL}/category`,
+      requestData,
+      this.httpOptions
+    );
   }
 }

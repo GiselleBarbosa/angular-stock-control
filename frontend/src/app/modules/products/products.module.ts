@@ -4,7 +4,6 @@ import { SharedModuleGlobal } from 'src/app/shared/shared.module';
 import { ProductsTableComponent } from './components/products-table/products-table.component';
 import { ProductsHomeComponent } from './pages/products-home/products-home.component';
 import { PRODUCTS_ROUTES } from './products.routing';
-import { ConfirmationService, MessageService } from 'primeng/api';
 import { ProductFormComponent } from './components/product-form/product-form.component';
 
 @NgModule({

@@ -1,13 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
-import { DialogService } from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Subject, takeUntil } from 'rxjs';
 import { Severity } from 'src/app/enum/severity.enum';
 import { Categories } from 'src/app/interfaces/category/categories-interface';
 import { DeleteCategoryEvent } from 'src/app/interfaces/event/category/delete-category-event-interface';
 import { CategoriesService } from 'src/app/services/categories/categories.service';
 import { ToastMessagesService } from 'src/app/shared/services/toast-messages/toast-messages.service';
+import { CategoryFormComponent } from '../../components/category-form/category-form.component';
+import { EventAction } from 'src/app/interfaces/event/event-action-interface';
 
 @Component({
   selector: 'app-categories-home',
@@ -16,15 +18,15 @@ import { ToastMessagesService } from 'src/app/shared/services/toast-messages/toa
 })
 export class CategoriesHomeComponent implements OnInit, OnDestroy {
   private readonly destroy$ = new Subject<void>();
-
   public categoriesList!: Categories.CategoriesResponse[];
+  public ref!: DynamicDialogRef;
 
   constructor(
     private categoriesService: CategoriesService,
-    private dialogService: DialogService,
     private toastMessagesService: ToastMessagesService,
     private confirmationService: ConfirmationService,
-    private router: Router
+    private router: Router,
+    private dialogService: DialogService
   ) {}
 
   ngOnInit(): void {
@@ -68,6 +70,24 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
     }
   }
 
+  handleCategoryAction(event: EventAction): void {
+    if (event) {
+      this.ref = this.dialogService.open(CategoryFormComponent, {
+        header: event.action,
+        width: '50%',
+        contentStyle: { overflow: 'auto' },
+        baseZIndex: 10000,
+        maximizable: true,
+        data: {
+          event: event,
+        },
+      });
+      this.ref.onClose.pipe(takeUntil(this.destroy$)).subscribe({
+        next: () => this.getAllCategories(),
+      });
+    }
+  }
+
   deleteCategory(category_id: string) {
     if (category_id) {
       this.categoriesService
@@ -80,6 +100,11 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
               'Sucesso',
               'Categoria removida com sucesso!'
             );
+            this.confirmationService.close();
+            if (this.ref) {
+              this.ref.close(true);
+            }
+            this.getAllCategories();
           },
           error: error => {
             console.error(error);
@@ -88,9 +113,6 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
               'Erro',
               'Houve um erro ao remover a categoria'
             );
-          },
-          complete: () => {
-            this.getAllCategories();
           },
         });
     }

@@ -1,5 +1,5 @@
 export interface EditCategoryEvent {
   action: string;
   id?: string;
-  categoryName: string;
+  categoryName?: string;
 }
