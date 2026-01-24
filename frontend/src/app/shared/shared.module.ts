@@ -22,7 +22,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { TooltipModule } from 'primeng/tooltip';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ShortenPipe } from './pipes/shorten/shorten-pipe';
 
 const IMPORTS = [
   CommonModule,
@@ -54,8 +54,8 @@ const PRIMENG = [
 ];
 
 @NgModule({
-  declarations: [ToolbarNavigationComponent],
+  declarations: [ToolbarNavigationComponent, ShortenPipe],
   imports: [...IMPORTS, ...PRIMENG],
-  exports: [...PRIMENG, ToolbarNavigationComponent, IMPORTS],
+  exports: [...PRIMENG, ToolbarNavigationComponent, IMPORTS, ShortenPipe],
 })
 export class SharedModuleGlobal {}

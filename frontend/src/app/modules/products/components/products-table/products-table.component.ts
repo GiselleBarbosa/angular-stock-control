@@ -7,7 +7,7 @@ import { Products } from 'src/app/interfaces/product/products-interface';
 @Component({
   selector: 'app-products-table',
   templateUrl: './products-table.component.html',
-  styleUrls: [],
+  styleUrls: []
 })
 export class ProductsTableComponent {
   @Input() products: Products.ProductsResponse[] = [];
