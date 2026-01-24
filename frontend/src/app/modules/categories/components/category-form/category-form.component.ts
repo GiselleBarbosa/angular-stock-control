@@ -34,9 +34,26 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.categoryAction = this.config.data;
+    if (
+      (this.categoryAction.event.action === this.editCategoryAction &&
+        this.categoryAction.event.categoryName !== null) ||
+      undefined
+    ) {
+      this.setCategoryName(this.categoryAction.event.categoryName as string);
+    }
   }
 
-  handleSubmitAddCategory() {
+  handleSubmitCategoryAction(): void {
+    if (this.categoryAction.event.action === this.addCategoryAction) {
+      this.handleSubmitAddCategory();
+    } else if (this.categoryAction.event.action === this.editCategoryAction) {
+      this.handleSubmitEditCategory();
+    }
+
+    return;
+  }
+
+  handleSubmitAddCategory(): void {
     if (this.categoryForm?.value && this.categoryForm?.valid) {
       const requestCreateCategory = {
         name: this.categoryForm?.value.name as string,
@@ -66,6 +83,54 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
             );
           },
         });
+    }
+  }
+
+  handleSubmitEditCategory(): void {
+    if (
+      this.categoryForm?.value &&
+      this.categoryForm?.valid &&
+      this.categoryAction.event.id
+    ) {
+      const requestEditCategory: {
+        name: string;
+        category_id: string;
+      } = {
+        name: this.categoryForm.value.name as string,
+        category_id: this.categoryAction.event.id,
+      };
+      this.categoryService
+        .editCategory(requestEditCategory)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: () => {
+            this.categoryForm.reset();
+            this.toastMessageService.show(
+              Severity.SUCCESS,
+              'Operação concluída',
+              'Categoria editada com sucesso.'
+            );
+            this.ref.close(true);
+
+            this.categoryForm.reset();
+          },
+          error: error => {
+            console.error(error);
+            this.toastMessageService.show(
+              Severity.ERROR,
+              'Falha na operação',
+              'Houve um erro ao editar a categoria.'
+            );
+          },
+        });
+    }
+  }
+
+  setCategoryName(categoryName: string): void {
+    if (categoryName) {
+      this.categoryForm.setValue({
+        name: categoryName,
+      });
     }
   }
 

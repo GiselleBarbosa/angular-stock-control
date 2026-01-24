@@ -1,5 +1,17 @@
 <div *ngIf="categoryAction.event.action === addCategoryAction">
-  <form [formGroup]="categoryForm" (ngSubmit)="handleSubmitAddCategory()">
+  <form [formGroup]="categoryForm" (ngSubmit)="handleSubmitCategoryAction()">
+    <div class="card flex flex-column md:flex-column gap-4">
+      <input pInputText placeholder="Nome" formControlName="name" />
+
+      <div class="flex flex-row justify-content-center align-content-center m-1">
+        <p-button type="submit" [disabled]="categoryForm.invalid" label="Concluir" />
+      </div>
+    </div>
+  </form>
+</div>
+
+<div *ngIf="categoryAction.event.action === editCategoryAction">
+  <form [formGroup]="categoryForm" (ngSubmit)="handleSubmitCategoryAction()">
     <div class="card flex flex-column md:flex-column gap-4">
       <input pInputText placeholder="Nome" formControlName="name" />
 

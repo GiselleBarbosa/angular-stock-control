@@ -19,7 +19,10 @@ export class CategoriesService {
     }),
   };
 
-  constructor(private http: HttpClient, private cookieService: CookieService) {}
+  constructor(
+    private http: HttpClient,
+    private cookieService: CookieService
+  ) {}
 
   getAllCategories(): Observable<Categories.CategoriesResponse[]> {
     return this.http.get<Categories.CategoriesResponse[]>(
@@ -44,6 +47,19 @@ export class CategoriesService {
       `${this.API_URL}/category`,
       requestData,
       this.httpOptions
+    );
+  }
+
+  editCategory(requestData: { name: string; category_id: string }): Observable<void> {
+    return this.http.put<void>(
+      `${this.API_URL}/category/edit`,
+      { name: requestData.name },
+      {
+        ...this.httpOptions,
+        params: {
+          category_id: requestData.category_id,
+        },
+      }
     );
   }
 }
