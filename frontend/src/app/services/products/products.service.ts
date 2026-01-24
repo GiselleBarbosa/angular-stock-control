@@ -19,7 +19,10 @@ export class ProductsService {
     }),
   };
 
-  constructor(private http: HttpClient, private cookieService: CookieService) {}
+  constructor(
+    private http: HttpClient,
+    private cookieService: CookieService
+  ) {}
 
   getAllProducts(): Observable<Products.ProductsResponse[]> {
     return this.http
@@ -54,6 +57,23 @@ export class ProductsService {
       `${this.API_URL}/product/edit`,
       requestData,
       this.httpOptions
+    );
+  }
+
+  saleProduct(
+    requestData: Products.SaleProductRequest
+  ): Observable<Products.SaleProductResponse> {
+    return this.http.put<Products.SaleProductResponse>(
+      `${this.API_URL}/product/sale`,
+      {
+        amount: requestData.amount,
+      },
+      {
+        ...this.httpOptions,
+        params: {
+          product_id: requestData.product_id,
+        },
+      }
     );
   }
 }

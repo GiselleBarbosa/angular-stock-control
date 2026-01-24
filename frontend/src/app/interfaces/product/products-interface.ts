@@ -45,4 +45,15 @@ export namespace Products {
     amount: number;
     category_id: string;
   }
+
+  export interface SaleProductRequest {
+    amount: number;
+    product_id: string;
+  }
+
+  export interface SaleProductResponse {
+    id: string;
+    name: string;
+    amount: number;
+  }
 }

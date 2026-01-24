@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { Subject, takeUntil } from 'rxjs';
 import { ProductEvent } from 'src/app/enum/productEvent.enum';
@@ -43,6 +44,11 @@ export class ProductFormComponent implements OnInit, OnDestroy {
     category_id: ['', Validators.required],
   });
 
+  public saleProductForm = this.formBuilder.group({
+    amount: [0, Validators.required],
+    product_id: ['', Validators.required],
+  });
+
   public addProductAction = ProductEvent.ADD_PRODUCT_EVENT;
   public editProductAction = ProductEvent.EDIT_PRODUCT_EVENT;
   public saleProductAction = ProductEvent.SALE_PRODUCT_EVENT;
@@ -53,7 +59,8 @@ export class ProductFormComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private toastMessageService: ToastMessagesService,
     private productsDataTransferService: ProductsDataTransferService,
-    private ref: DynamicDialogConfig
+    private ref: DynamicDialogConfig,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -155,6 +162,45 @@ export class ProductFormComponent implements OnInit, OnDestroy {
               Severity.ERROR,
               'Falha na operação',
               'Houve um erro ao editar o produto.'
+            );
+          },
+        });
+    }
+  }
+
+  handleSubmitSaleProduct(): void {
+    if (this.saleProductForm.value && this.saleProductForm.valid) {
+      const requestData: Products.SaleProductRequest = {
+        amount: this.saleProductForm.value.amount as number,
+        product_id: this.saleProductForm.value.product_id as string,
+      };
+
+      console.log('req', requestData);
+
+      this.productsService
+        .saleProduct(requestData)
+        .pipe(takeUntil(this.detroy$))
+        .subscribe({
+          next: response => {
+            if (response) {
+              this.saleProductForm.reset();
+              this.getProductsData();
+            }
+
+            this.router.navigate(['/dashboard']);
+            this.toastMessageService.show(
+              Severity.SUCCESS,
+              'Operação concluída',
+              'Produto vendido com sucesso.'
+            );
+          },
+          error: error => {
+            console.error(error);
+            this.saleProductForm.reset();
+            this.toastMessageService.show(
+              Severity.ERROR,
+              'Falha na operação',
+              'Houve um erro ao vender o produto.'
             );
           },
         });
