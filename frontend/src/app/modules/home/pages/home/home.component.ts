@@ -1,4 +1,10 @@
-import { Component, OnDestroy } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnDestroy,
+  ViewChild,
+} from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
@@ -13,7 +19,10 @@ import { ToastMessagesService } from 'src/app/shared/services/toast-messages/toa
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements OnDestroy {
+export class HomeComponent implements OnDestroy, AfterViewInit {
+  @ViewChild('emailInput') public emailInputRef!: ElementRef;
+  @ViewChild('passwordInput') public passwordInputRef!: ElementRef;
+
   private destroy$ = new Subject<void>();
   loginCard = true;
 
@@ -35,6 +44,13 @@ export class HomeComponent implements OnDestroy {
     private router: Router,
     private toastMessage: ToastMessagesService
   ) {}
+
+  ngAfterViewInit(): void {
+    this.emailInputRef.nativeElement.value = 'Informe seu email'
+    this.passwordInputRef.nativeElement.value = 'Informe sua senha';
+    console.log("Email Input: ", this.emailInputRef.nativeElement.value);
+    console.log('Password Input: ', this.passwordInputRef.nativeElement.value);
+  }
 
   login() {
     if (this.loginForm.value && this.loginForm.valid) {
